@@ -3,3 +3,13 @@
 .error-example {
   display: inline-block;
 }
+
+.status-ok {
+  color: rgb(0, 190, 0);
+  font-weight: bold;
+}
+
+.status-error {
+  color: red;
+  font-weight: bold;
+}
