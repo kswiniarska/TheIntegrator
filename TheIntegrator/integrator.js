@@ -29,9 +29,14 @@ APIconnection('https://jsonplaceholder.typicode.com/todos', 'ticketing system st
 
 APIconnection('https://error.pl/error', 'cert database: ', '.js-error-example');
 
+let usersData = [];
+
+const tableElement = document.querySelector('.js-users-table-body');
+const tableUpdated = document.querySelector('.js-table-updated');
+
 async function loadUsersData() {
-  let usersData = [];
-  const tableElement = document.querySelector('#js-users-table-body');
+  
+  
   if(!tableElement) return;
 
   try {
@@ -56,5 +61,50 @@ async function loadUsersData() {
   } catch(error) {
       console.error(error);
   };
+
 };
-loadUsersData();
+
+function filterUserData() {
+  const inputElement = document.querySelector('.js-input');
+  const searchButton = document.querySelector('.js-search-button');
+
+  if (!searchButton) {
+    console.error("UWAGA: Nie znaleziono przycisku .js-search-button w HTML!");
+    return;
+  }
+
+  searchButton.addEventListener('click', () => {
+    const inputElementValue = inputElement.value;
+    const errorElement = document.querySelector('.js-error-search-message')
+    let filteredHTML = '';
+
+    if (!inputElementValue) {
+      errorElement.innerHTML = 'Enter name that you want to search!';
+      return;
+    } else if (/\d/.test(inputElementValue)) {
+      errorElement.innerHTML = 'wrong data type! has to be string';
+      return;
+      } 
+    
+
+    usersData.forEach((user) => {
+    if (user.name === inputElementValue) {
+      filteredHTML += `
+      <tr>
+        <td>${user.name}</td>
+        <td>${user.username}</td>
+        <td>${user.email}</td>
+        <td>${user.address.street}</td>
+        <td>${user.phone}</td>
+      </tr>`
+    }
+
+    tableUpdated.innerHTML = filteredHTML;
+    })
+  })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadUsersData();
+    filterUserData();
+});
