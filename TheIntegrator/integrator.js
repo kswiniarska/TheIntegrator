@@ -22,21 +22,13 @@ async function APIconnection(link, htmlMessage, classElement) {
   element.innerHTML = `${htmlMessage} <span class="${statusClass}"> ${serverStatus}</span>`;
 };
 
-
 APIconnection('https://jsonplaceholder.typicode.com/users', 'User Database status: ', '.js-users-database');
 
 APIconnection('https://jsonplaceholder.typicode.com/todos', 'ticketing system status: ', '.js-ticketing-system');
 
 APIconnection('https://error.pl/error', 'cert database: ', '.js-error-example');
 
-let usersData = [];
-
-const tableElement = document.querySelector('.js-users-table-body');
-const tableUpdated = document.querySelector('.js-table-updated');
-
 async function loadUsersData() {
-  
-  
   if(!tableElement) return;
 
   try {
@@ -44,8 +36,21 @@ async function loadUsersData() {
     const data = await response.json();
     usersData = data;
 
-    let tableHTML = '';
-    usersData.forEach((user) => {
+    renderTable(usersData);
+    
+  } catch(error) {
+      console.error(error);
+  };
+
+};
+
+let usersData = [];
+const tableElement = document.querySelector('.js-users-table-body');
+
+function renderTable(data) {
+  if (!tableElement) return;
+  let tableHTML = '';
+  data.forEach((user) => {
     tableHTML += `
     <tr>
       <td>${user.name}</td>
@@ -56,27 +61,37 @@ async function loadUsersData() {
     </tr>
   `;
   });
- 
   tableElement.innerHTML = tableHTML;
-  } catch(error) {
-      console.error(error);
-  };
-
 };
 
 function filterUserData() {
   const inputElement = document.querySelector('.js-input');
   const searchButton = document.querySelector('.js-search-button');
+  const errorElement = document.querySelector('.js-error-search-message');
 
   if (!searchButton) {
-    console.error("UWAGA: Nie znaleziono przycisku .js-search-button w HTML!");
+    console.error("ERROR: button .js-search-button not exist in HTML!");
     return;
   }
 
-  searchButton.addEventListener('click', () => {
-    const inputElementValue = inputElement.value;
-    const errorElement = document.querySelector('.js-error-search-message')
-    let filteredHTML = '';
+  searchButton.addEventListener('click', searchUser);
+  inputElement.addEventListener('keydown', (event) => {
+     if (event.key === 'Enter') {
+      searchUser();
+    }; 
+  });
+    
+
+  const resetButton = document.querySelector('.js-reset-button');
+  resetButton.addEventListener('click', () => {
+    renderTable(usersData);
+    errorElement.innerHTML = '';
+    inputElement.value = '';
+  })
+
+
+function searchUser() {
+  const inputElementValue = inputElement.value.trim().toLowerCase();
 
     if (!inputElementValue) {
       errorElement.innerHTML = 'Enter name that you want to search!';
@@ -86,25 +101,24 @@ function filterUserData() {
       return;
       } 
     
+    const usersDataFiltered = usersData.filter((user) => {
+      return user.name.toLowerCase().includes(inputElementValue)
+    });
 
-    usersData.forEach((user) => {
-    if (user.name === inputElementValue) {
-      filteredHTML += `
-      <tr>
-        <td>${user.name}</td>
-        <td>${user.username}</td>
-        <td>${user.email}</td>
-        <td>${user.address.street}</td>
-        <td>${user.phone}</td>
-      </tr>`
+    if (usersDataFiltered.length === 0) {
+      errorElement.innerHTML = 'User not found';
+      tableElement.innerHTML = '';
+      return;
+    } else {
+      errorElement.innerHTML = '';
     }
+    
+    renderTable(usersDataFiltered)
 
-    tableUpdated.innerHTML = filteredHTML;
-    })
-  })
+  };
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     loadUsersData();
     filterUserData();
-});
+})

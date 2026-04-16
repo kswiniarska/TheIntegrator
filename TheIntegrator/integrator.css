@@ -1,19 +1,169 @@
-.user-database,
-.ticketing-system,
-.error-example {
-  display: inline-block;
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #2c3e50;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  border-bottom: 3px solid #3498db;
+}
+
+.health-check-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 30px;
+}
+
+.health-check-container p {
+  font-weight: bold;
+  margin-top: 0;
+  color: #7f8c8d;
+}
+
+.databases {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.databases div {
+  background: #ecf0f1;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  flex: 1;
+  min-width: 200px;
 }
 
 .status-ok {
-  color: rgb(0, 190, 0);
+  color: #27ae60;
   font-weight: bold;
 }
 
 .status-error {
-  color: red;
+  color: #e74c3c;
   font-weight: bold;
 }
 
-.error-message {
-  color: red;
+.data-table {
+  width: 100%;
+  max-width: 1000px;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+.data-table thead {
+  background-color: #34495e;
+  color: #ecf0f1;
+}
+
+.data-table th, 
+.data-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.search-container {
+  background: #fff;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.js-input {
+  padding: 12px 15px;
+  width: 60%;
+  border: 2px solid #bdc3c7;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.js-input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+button {
+  padding: 12px 25px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background 0.3s, transform 0.1s;
+  margin-left: 5px;
+}
+
+.js-search-button {
+  background-color: #3498db;
+  color: white;
+}
+
+.js-search-button:hover {
+  background-color: #2980b9;
+}
+
+.js-reset-button {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.js-reset-button:hover {
+  background-color: #7f8c8d;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.js-error-search-message {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 15px;
+  height: 20px; 
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .js-input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    width: 48%;
+    margin: 0;
+  }
 }
